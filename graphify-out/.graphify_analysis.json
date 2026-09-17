@@ -1,6 +1,52 @@
 {
   "communities": {
     "0": [
+      "frontend_app_booking_page",
+      "frontend_app_booking_page_bookingpage",
+      "frontend_app_confirmation_page",
+      "frontend_app_confirmation_page_confirmationpage",
+      "frontend_components_booking_confirmationticket",
+      "frontend_components_booking_confirmationticket_confirmationticket",
+      "frontend_components_booking_confirmationticket_confirmationticketprops",
+      "frontend_components_booking_paymentform",
+      "frontend_components_booking_paymentform_formerrors",
+      "frontend_components_booking_paymentform_paymentfield",
+      "frontend_components_booking_paymentform_paymentform",
+      "frontend_components_booking_paymentform_paymentformprops",
+      "frontend_components_booking_paymentform_validatepayment",
+      "frontend_components_booking_processingpayment",
+      "frontend_components_booking_processingpayment_processingpayment",
+      "frontend_components_booking_processingpayment_processingpaymentprops",
+      "frontend_components_booking_seatgrid",
+      "frontend_components_booking_seatgrid_automatic_seats",
+      "frontend_components_booking_seatgrid_seatgrid",
+      "frontend_components_booking_seatgrid_seatgridprops",
+      "frontend_components_booking_seatgrid_seats",
+      "frontend_lib_booking_api",
+      "frontend_lib_booking_api_bookingconfirmation",
+      "frontend_lib_booking_api_createbooking",
+      "frontend_lib_booking_api_createbookingrequest",
+      "frontend_lib_booking_session",
+      "frontend_lib_booking_session_booking_confirmation_key",
+      "frontend_lib_booking_session_ismovie",
+      "frontend_lib_booking_session_ismovieconfirmation",
+      "frontend_lib_booking_session_istheatre",
+      "frontend_lib_booking_session_paymentdetails",
+      "frontend_lib_booking_session_paymentmethod",
+      "frontend_lib_booking_session_readbookingconfirmation",
+      "frontend_lib_booking_session_readbookingselection",
+      "frontend_lib_booking_session_readjson",
+      "frontend_lib_booking_session_savebookingconfirmation",
+      "frontend_tests_bookingcomponents_test",
+      "frontend_tests_bookingcomponents_test_paymentcompletionharness",
+      "frontend_tests_bookingcomponents_test_seatgridharness",
+      "frontend_tests_bookingsession_test",
+      "frontend_tests_bookingsession_test_createstorage",
+      "frontend_tests_confirmationticket_test",
+      "frontend_tests_paymentform_test",
+      "frontend_tests_paymentform_test_checkoutharness"
+    ],
+    "1": [
       "backend_package_devdependencies",
       "backend_package_devdependencies_supertest",
       "backend_package_devdependencies_ts_node_dev",
@@ -10,27 +56,18 @@
       "backend_package_devdependencies_types_jsonwebtoken",
       "backend_package_devdependencies_types_node",
       "backend_package_devdependencies_types_supertest",
+      "backend_package_devdependencies_typescript",
       "backend_package_devdependencies_vitest",
       "backend_package_json_types_node",
-      "backend_package_json_vitest",
-      "frontend_package_devdependencies_types_node",
-      "supertest",
-      "ts_node_dev",
-      "types_better_sqlite3",
-      "types_cors",
-      "types_express",
-      "types_jsonwebtoken",
-      "types_supertest"
-    ],
-    "1": [
-      "backend_package_devdependencies_typescript",
       "backend_package_json_typescript",
+      "backend_package_json_vitest",
       "frontend_package_devdependencies",
       "frontend_package_devdependencies_jsdom",
       "frontend_package_devdependencies_playwright_test",
       "frontend_package_devdependencies_testing_library_jest_dom",
       "frontend_package_devdependencies_testing_library_react",
       "frontend_package_devdependencies_testing_library_user_event",
+      "frontend_package_devdependencies_types_node",
       "frontend_package_devdependencies_types_react",
       "frontend_package_devdependencies_types_react_dom",
       "frontend_package_devdependencies_typescript",
@@ -38,33 +75,55 @@
       "frontend_package_json_vitest",
       "jsdom",
       "playwright_test",
+      "supertest",
       "testing_library_jest_dom",
       "testing_library_react",
       "testing_library_user_event",
+      "ts_node_dev",
+      "types_better_sqlite3",
+      "types_cors",
+      "types_express",
+      "types_jsonwebtoken",
       "types_react",
-      "types_react_dom"
+      "types_react_dom",
+      "types_supertest"
     ],
     "2": [
-      "backend_src_features_auth_auth_controller",
-      "backend_src_features_auth_auth_controller_createauthcontroller",
-      "backend_src_features_auth_auth_controller_mobilenumberschema",
-      "backend_src_features_auth_auth_controller_verifyschema",
-      "backend_src_features_auth_auth_routes",
-      "backend_src_features_auth_auth_routes_createauthrouter",
-      "backend_src_features_auth_auth_service",
-      "backend_src_features_auth_auth_service_authservice",
-      "backend_src_features_auth_auth_service_authservice_constructor",
-      "backend_src_features_auth_auth_service_authservice_requestlogin",
-      "backend_src_features_auth_auth_service_authservice_verifyotp",
-      "backend_src_features_auth_auth_types",
-      "backend_src_features_auth_auth_types_authtokenresponse",
-      "backend_src_features_auth_auth_types_logininput",
-      "backend_src_features_auth_auth_types_userrecord",
-      "backend_src_features_auth_auth_types_verifyinput",
-      "backend_src_middleware_error_handler_httperror",
-      "backend_src_middleware_error_handler_httperror_constructor"
+      "frontend_app_login_page",
+      "frontend_app_login_page_loginpage",
+      "frontend_app_movies_page",
+      "frontend_app_movies_page_moviespage",
+      "frontend_components_auth_loginform",
+      "frontend_components_auth_loginform_loginform",
+      "frontend_components_catalog_moviecard",
+      "frontend_components_catalog_moviecard_moviecard",
+      "frontend_components_catalog_moviecard_moviecardprops",
+      "frontend_components_catalog_theatrelist",
+      "frontend_components_catalog_theatrelist_theatrelist",
+      "frontend_components_catalog_theatrelist_theatrelistprops",
+      "frontend_lib_api_client",
+      "frontend_lib_api_client_apierror",
+      "frontend_lib_api_client_apierror_constructor",
+      "frontend_lib_api_client_post",
+      "frontend_lib_api_client_requestotp",
+      "frontend_lib_api_client_verifyotp",
+      "frontend_lib_catalog_api",
+      "frontend_lib_catalog_api_fetchmovies",
+      "frontend_lib_catalog_api_fetchtheatres",
+      "frontend_lib_catalog_api_get",
+      "frontend_lib_catalog_api_movie",
+      "frontend_lib_catalog_api_theatre",
+      "frontend_tests_loginform_test",
+      "frontend_tests_loginform_test_push",
+      "frontend_tests_moviecard_test",
+      "frontend_tests_moviespage_test",
+      "frontend_tests_moviespage_test_jsonresponse",
+      "frontend_tests_moviespage_test_push",
+      "frontend_tests_moviespage_test_replace",
+      "frontend_tests_moviespage_test_router"
     ],
     "3": [
+      "frontend_tsconfig",
       "frontend_tsconfig_compileroptions",
       "frontend_tsconfig_compileroptions_allowjs",
       "frontend_tsconfig_compileroptions_esmoduleinterop",
@@ -80,11 +139,68 @@
       "frontend_tsconfig_compileroptions_skiplibcheck",
       "frontend_tsconfig_compileroptions_strict",
       "frontend_tsconfig_compileroptions_target",
+      "frontend_tsconfig_exclude",
+      "frontend_tsconfig_include",
       "ref_dom",
       "ref_dom_iterable",
-      "ref_esnext"
+      "ref_esnext",
+      "ref_next_env_d_ts",
+      "ref_next_types_ts",
+      "ref_node_modules",
+      "ref_ts",
+      "ref_tsx"
     ],
     "4": [
+      "backend_src_config",
+      "backend_src_config_config",
+      "backend_src_config_environmentschema",
+      "backend_src_features_catalog_catalog_controller",
+      "backend_src_features_catalog_catalog_controller_catalogtestoptions",
+      "backend_src_features_catalog_catalog_controller_createcatalogcontroller",
+      "backend_src_features_catalog_catalog_controller_theatrequeryschema",
+      "backend_src_features_catalog_catalog_routes",
+      "backend_src_features_catalog_catalog_routes_createcatalogrouter",
+      "backend_src_features_catalog_catalog_service",
+      "backend_src_features_catalog_catalog_service_catalogservice",
+      "backend_src_features_catalog_catalog_service_catalogservice_constructor",
+      "backend_src_features_catalog_catalog_service_catalogservice_listmovies",
+      "backend_src_features_catalog_catalog_service_catalogservice_listtheatresformovie",
+      "backend_src_features_catalog_catalog_service_catalogservice_movieexists",
+      "backend_src_features_catalog_catalog_types",
+      "backend_src_features_catalog_catalog_types_moviedto",
+      "backend_src_features_catalog_catalog_types_moviesresponse",
+      "backend_src_features_catalog_catalog_types_theatredto",
+      "backend_src_features_catalog_catalog_types_theatresresponse",
+      "backend_src_middleware_authenticate",
+      "backend_src_middleware_authenticate_authenticate",
+      "backend_src_middleware_error_handler_httperror",
+      "backend_src_middleware_error_handler_httperror_constructor"
+    ],
+    "5": [
+      "backend_package",
+      "backend_package_dependencies",
+      "backend_package_dependencies_better_sqlite3",
+      "backend_package_dependencies_cors",
+      "backend_package_dependencies_dotenv",
+      "backend_package_dependencies_express",
+      "backend_package_dependencies_jsonwebtoken",
+      "backend_package_dependencies_zod",
+      "backend_package_name",
+      "backend_package_private",
+      "backend_package_scripts",
+      "backend_package_scripts_build",
+      "backend_package_scripts_dev",
+      "backend_package_scripts_start",
+      "backend_package_scripts_test",
+      "backend_package_version",
+      "better_sqlite3",
+      "cors",
+      "dotenv",
+      "express",
+      "jsonwebtoken",
+      "zod"
+    ],
+    "6": [
       "frontend_package",
       "frontend_package_dependencies",
       "frontend_package_dependencies_next",
@@ -97,12 +213,31 @@
       "frontend_package_scripts_dev",
       "frontend_package_scripts_start",
       "frontend_package_scripts_test",
+      "frontend_package_scripts_test_e2e",
       "frontend_package_version",
       "next",
       "react",
       "react_dom"
     ],
-    "5": [
+    "7": [
+      "backend_src_features_auth_auth_controller",
+      "backend_src_features_auth_auth_controller_createauthcontroller",
+      "backend_src_features_auth_auth_controller_mobilenumberschema",
+      "backend_src_features_auth_auth_controller_verifyschema",
+      "backend_src_features_auth_auth_routes",
+      "backend_src_features_auth_auth_routes_createauthrouter",
+      "backend_src_features_auth_auth_service",
+      "backend_src_features_auth_auth_service_authservice",
+      "backend_src_features_auth_auth_service_authservice_constructor",
+      "backend_src_features_auth_auth_service_authservice_requestlogin",
+      "backend_src_features_auth_auth_service_authservice_verifyotp",
+      "backend_src_features_auth_auth_types",
+      "backend_src_features_auth_auth_types_authtokenresponse",
+      "backend_src_features_auth_auth_types_logininput",
+      "backend_src_features_auth_auth_types_userrecord",
+      "backend_src_features_auth_auth_types_verifyinput"
+    ],
+    "8": [
       "backend_tsconfig",
       "backend_tsconfig_compileroptions",
       "backend_tsconfig_compileroptions_downleveliteration",
@@ -119,12 +254,9 @@
       "ref_src_ts",
       "ref_tests"
     ],
-    "6": [
+    "9": [
       "backend_src_app",
       "backend_src_app_createapp",
-      "backend_src_config",
-      "backend_src_config_config",
-      "backend_src_config_environmentschema",
       "backend_src_db_database",
       "backend_src_db_database_createdatabase",
       "backend_src_db_database_seedcatalog",
@@ -133,119 +265,110 @@
       "backend_src_middleware_error_handler",
       "backend_src_middleware_error_handler_errorhandler",
       "backend_src_middleware_error_handler_notfoundhandler",
-      "backend_tests_auth_api_test"
-    ],
-    "7": [
-      "backend_package_dependencies",
-      "backend_package_dependencies_better_sqlite3",
-      "backend_package_dependencies_cors",
-      "backend_package_dependencies_dotenv",
-      "backend_package_dependencies_express",
-      "backend_package_dependencies_jsonwebtoken",
-      "backend_package_dependencies_zod",
-      "better_sqlite3",
-      "cors",
-      "dotenv",
-      "express",
-      "jsonwebtoken",
-      "zod"
-    ],
-    "8": [
-      "developer_engine_memory_progress_summary_auth_shell",
-      "developer_engine_workers_a6ed9cd73c40_scratch_findings_auth_shell_implementation",
-      "developer_engine_workers_a6ed9cd73c40_scratch_findings_better_sqlite3_native_build_limitation",
-      "developer_plan_authentication_and_application_shell",
-      "developer_plan_bookmyshow_replica",
-      "developer_plan_bookmyshow_visual_language",
-      "developer_plan_jwt_bearer_authentication",
-      "developer_plan_login_api",
-      "developer_plan_otp_authentication",
-      "developer_plan_sqlite_database",
-      "developer_plan_verify_api",
-      "developer_todos_auth_shell"
-    ],
-    "9": [
-      "frontend_app_login_page",
-      "frontend_app_login_page_loginpage",
-      "frontend_components_auth_loginform",
-      "frontend_components_auth_loginform_loginform",
-      "frontend_lib_api_client",
-      "frontend_lib_api_client_apierror",
-      "frontend_lib_api_client_apierror_constructor",
-      "frontend_lib_api_client_post",
-      "frontend_lib_api_client_requestotp",
-      "frontend_lib_api_client_verifyotp",
-      "frontend_tests_loginform_test",
-      "frontend_tests_loginform_test_push"
+      "backend_tests_auth_api_test",
+      "backend_tests_booking_integration_test",
+      "backend_tests_bookings_api_test",
+      "backend_tests_catalog_api_test"
     ],
     "10": [
-      "backend_package",
-      "backend_package_name",
-      "backend_package_private",
-      "backend_package_scripts",
-      "backend_package_scripts_build",
-      "backend_package_scripts_dev",
-      "backend_package_scripts_start",
-      "backend_package_scripts_test",
-      "backend_package_version"
+      "backend_src_features_bookings_booking_controller",
+      "backend_src_features_bookings_booking_controller_createbookingcontroller",
+      "backend_src_features_bookings_booking_routes",
+      "backend_src_features_bookings_booking_routes_createbookingrouter",
+      "backend_src_features_bookings_booking_service",
+      "backend_src_features_bookings_booking_service_bookingservice",
+      "backend_src_features_bookings_booking_service_bookingservice_constructor",
+      "backend_src_features_bookings_booking_service_bookingservice_createbooking",
+      "backend_src_features_bookings_booking_service_joinedbookingrow",
+      "backend_src_features_bookings_booking_types",
+      "backend_src_features_bookings_booking_types_bookingconfirmation",
+      "backend_src_features_bookings_booking_types_createbookinginput",
+      "backend_src_features_bookings_booking_types_createbookingschema",
+      "backend_tests_booking_validation_test"
     ],
     "11": [
-      "frontend_tsconfig",
-      "frontend_tsconfig_exclude",
-      "frontend_tsconfig_include",
-      "ref_next_env_d_ts",
-      "ref_next_types_ts",
-      "ref_node_modules",
-      "ref_ts",
-      "ref_tsx"
+      "readme_booking_api",
+      "readme_bookmyshow_replica",
+      "readme_jwt_authentication",
+      "readme_movie_ticket_booking_workflow",
+      "readme_sensitive_payment_data_exclusion",
+      "readme_sqlite_ticket_persistence"
     ],
     "12": [
+      "docker_compose_backend",
+      "docker_compose_backend_healthcheck",
+      "docker_compose_booking_data",
+      "docker_compose_frontend"
+    ],
+    "13": [
       "frontend_app_layout",
       "frontend_app_layout_metadata",
       "frontend_app_layout_rootlayout"
     ],
-    "13": [
+    "14": [
       "frontend_app_page",
       "frontend_app_page_homepage"
     ],
-    "14": [
+    "15": [
+      "frontend_e2e_auth_spec",
+      "frontend_e2e_auth_spec_capturebrowsererrors"
+    ],
+    "16": [
       "frontend_next_config",
       "frontend_next_config_nextconfig"
     ],
-    "15": [
+    "17": [
       "frontend_next_env_d",
       "frontend_next_env_d_rationale_4"
     ],
-    "16": [
-      "frontend_e2e_auth_spec"
+    "18": [
+      "frontend_e2e_booking_confirmation_spec"
     ],
-    "17": [
+    "19": [
+      "frontend_e2e_catalog_spec"
+    ],
+    "20": [
+      "frontend_e2e_integration_booking_spec"
+    ],
+    "21": [
+      "frontend_e2e_payment_spec"
+    ],
+    "22": [
+      "frontend_playwright_config"
+    ],
+    "23": [
       "frontend_vitest_config"
     ],
-    "18": [
+    "24": [
       "frontend_vitest_setup"
     ]
   },
   "cohesion": {
-    "0": 0.1,
-    "1": 0.1,
-    "2": 0.1830065359477124,
-    "3": 0.1111111111111111,
-    "4": 0.125,
-    "5": 0.13333333333333333,
-    "6": 0.2857142857142857,
-    "7": 0.15384615384615385,
-    "8": 0.19696969696969696,
-    "9": 0.2878787878787879,
-    "10": 0.2222222222222222,
-    "11": 0.25,
-    "12": 0.6666666666666666,
-    "13": 1.0,
+    "0": 0.09619450317124736,
+    "1": 0.05128205128205128,
+    "2": 0.11693548387096774,
+    "3": 0.07692307692307693,
+    "4": 0.14130434782608695,
+    "5": 0.09090909090909091,
+    "6": 0.11764705882352941,
+    "7": 0.21666666666666667,
+    "8": 0.13333333333333333,
+    "9": 0.37362637362637363,
+    "10": 0.2857142857142857,
+    "11": 0.4,
+    "12": 0.5,
+    "13": 0.6666666666666666,
     "14": 1.0,
     "15": 1.0,
     "16": 1.0,
     "17": 1.0,
-    "18": 1.0
+    "18": 1.0,
+    "19": 1.0,
+    "20": 1.0,
+    "21": 1.0,
+    "22": 1.0,
+    "23": 1.0,
+    "24": 1.0
   },
   "gods": [
     {
@@ -254,13 +377,33 @@
       "degree": 15
     },
     {
+      "id": "backend_src_app_createapp",
+      "label": "createApp()",
+      "degree": 12
+    },
+    {
       "id": "backend_tsconfig_compileroptions",
       "label": "compilerOptions",
       "degree": 10
     },
     {
-      "id": "backend_src_app_createapp",
-      "label": "createApp()",
+      "id": "backend_src_db_database_createdatabase",
+      "label": "createDatabase()",
+      "degree": 8
+    },
+    {
+      "id": "backend_src_features_catalog_catalog_service_catalogservice",
+      "label": "CatalogService",
+      "degree": 7
+    },
+    {
+      "id": "frontend_lib_booking_session_readbookingselection",
+      "label": "readBookingSelection()",
+      "degree": 7
+    },
+    {
+      "id": "frontend_lib_booking_session_readbookingconfirmation",
+      "label": "readBookingConfirmation()",
       "degree": 7
     },
     {
@@ -269,91 +412,71 @@
       "degree": 6
     },
     {
-      "id": "backend_package_scripts",
-      "label": "scripts",
-      "degree": 5
+      "id": "backend_src_features_catalog_catalog_controller_createcatalogcontroller",
+      "label": "createCatalogController()",
+      "degree": 6
     },
     {
-      "id": "backend_src_db_database_createdatabase",
-      "label": "createDatabase()",
-      "degree": 5
-    },
-    {
-      "id": "backend_src_features_auth_auth_controller_createauthcontroller",
-      "label": "createAuthController()",
-      "degree": 5
-    },
-    {
-      "id": "frontend_components_auth_loginform_loginform",
-      "label": "LoginForm()",
-      "degree": 5
-    },
-    {
-      "id": "frontend_package_scripts",
-      "label": "scripts",
-      "degree": 5
-    },
-    {
-      "id": "frontend_tsconfig_include",
-      "label": "include",
-      "degree": 5
+      "id": "backend_src_middleware_error_handler_httperror",
+      "label": "HttpError",
+      "degree": 6
     }
   ],
   "surprises": [
     {
-      "source": "auth-shell",
-      "target": "Authentication and Application Shell",
+      "source": "createApp()",
+      "target": "createAuthRouter()",
       "source_files": [
-        "todos.yaml",
-        "PLAN.md"
+        "backend/src/app.ts",
+        "backend/src/features/auth/auth.routes.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "bridges separate communities"
+    },
+    {
+      "source": "createApp()",
+      "target": "createBookingRouter()",
+      "source_files": [
+        "backend/src/app.ts",
+        "backend/src/features/bookings/booking.routes.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "bridges separate communities"
+    },
+    {
+      "source": "createApp()",
+      "target": "createCatalogRouter()",
+      "source_files": [
+        "backend/src/app.ts",
+        "backend/src/features/catalog/catalog.routes.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "bridges separate communities"
+    },
+    {
+      "source": "createApp()",
+      "target": "errorHandler()",
+      "source_files": [
+        "backend/src/app.ts",
+        "backend/src/middleware/error-handler.ts"
       ],
       "confidence": "INFERRED",
-      "relation": "conceptually_related_to",
-      "why": "inferred connection - not explicitly stated in source; connects across different repos/directories"
+      "relation": "indirect_call",
+      "why": "inferred connection - not explicitly stated in source"
     },
     {
-      "source": "Auth Shell Implementation",
-      "target": "OTP Authentication",
+      "source": "createApp()",
+      "target": "notFoundHandler()",
       "source_files": [
-        ".engine/workers/a6ed9cd73c40/scratch/findings.md",
-        "PLAN.md"
+        "backend/src/app.ts",
+        "backend/src/middleware/error-handler.ts"
       ],
-      "confidence": "EXTRACTED",
-      "relation": "references",
-      "why": "connects across different repos/directories"
-    },
-    {
-      "source": "Auth Shell Implementation",
-      "target": "SQLite Database",
-      "source_files": [
-        ".engine/workers/a6ed9cd73c40/scratch/findings.md",
-        "PLAN.md"
-      ],
-      "confidence": "EXTRACTED",
-      "relation": "references",
-      "why": "connects across different repos/directories"
-    },
-    {
-      "source": "better-sqlite3 Native Build Limitation",
-      "target": "SQLite Database",
-      "source_files": [
-        ".engine/workers/a6ed9cd73c40/scratch/findings.md",
-        "PLAN.md"
-      ],
-      "confidence": "EXTRACTED",
-      "relation": "conceptually_related_to",
-      "why": "connects across different repos/directories"
-    },
-    {
-      "source": "auth-shell Progress",
-      "target": "auth-shell",
-      "source_files": [
-        ".engine/memory/progress_summary.md",
-        "todos.yaml"
-      ],
-      "confidence": "EXTRACTED",
-      "relation": "references",
-      "why": "connects across different repos/directories"
+      "confidence": "INFERRED",
+      "relation": "indirect_call",
+      "why": "inferred connection - not explicitly stated in source"
     }
   ],
   "tokens": {
