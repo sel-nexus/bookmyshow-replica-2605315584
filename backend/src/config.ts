@@ -16,7 +16,15 @@ const environmentSchema = z.object({
 
 /** Expose validated runtime configuration for the API. */
 export const config = (() => {
-  const values = environmentSchema.parse(process.env);
+  const values = environmentSchema.parse({
+    PORT: process.env.PORT,
+    CORS_ORIGIN: process.env.CORS_ORIGIN,
+    DATABASE_PATH: process.env.DATABASE_PATH,
+    TEST_DATABASE_PATH: process.env.TEST_DATABASE_PATH,
+    JWT_SECRET: process.env.JWT_SECRET,
+    TEST_CATALOG_DELAY_MS: process.env.TEST_CATALOG_DELAY_MS,
+    TEST_EMPTY_THEATRES_MOVIE_ID: process.env.TEST_EMPTY_THEATRES_MOVIE_ID
+  });
   return {
     port: values.PORT,
     corsOrigins: values.CORS_ORIGIN.split(',').map((origin) => origin.trim()).filter(Boolean),
