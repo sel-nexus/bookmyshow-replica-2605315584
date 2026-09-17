@@ -53,36 +53,79 @@ export default function BookingPage() {
         theatreId: theatre.id,
         seats: selectedSeats,
         paymentMethod: payment.method,
-        totalPrice: selectedSeats.length * SEAT_PRICE
+        totalPrice: selectedSeats.length * SEAT_PRICE,
       });
       saveBookingConfirmation(window.sessionStorage, confirmation);
       router.push('/confirmation');
     } catch (error: unknown) {
-      setBookingError(error instanceof Error ? error.message : 'Unable to confirm your booking. Please try again.');
+      setBookingError(
+        error instanceof Error
+          ? error.message
+          : 'Unable to confirm your booking. Please try again.',
+      );
       setPayment(null);
     }
   }, [movie, payment, router, selectedSeats, theatre]);
 
   if (!movie || !theatre) {
-    return <main className="booking-page" aria-live="polite"><p className="catalog-status" role="status">Preparing your booking…</p></main>;
+    return (
+      <main className="booking-page" aria-live="polite">
+        <p className="catalog-status" role="status">
+          Preparing your booking…
+        </p>
+      </main>
+    );
   }
   if (payment) {
-    return <main className="booking-page"><ProcessingPayment onComplete={handleProcessingComplete} /></main>;
+    return (
+      <main className="booking-page">
+        <ProcessingPayment onComplete={handleProcessingComplete} />
+      </main>
+    );
   }
 
   const total = selectedSeats.length * SEAT_PRICE;
   return (
     <main className="booking-page">
-      <header className="site-header"><p className="brand">book<span>my</span>show</p><p className="header-link">Secure checkout</p></header>
-      <section className="booking-hero" aria-labelledby="booking-title"><p className="eyebrow">YOUR SHOW</p><h1 id="booking-title">{movie.title}</h1><p>{theatre.name}</p></section>
+      <header className="site-header">
+        <p className="brand">
+          book<span>my</span>show
+        </p>
+        <p className="header-link">Secure checkout</p>
+      </header>
+      <section className="booking-hero" aria-labelledby="booking-title">
+        <p className="eyebrow">YOUR SHOW</p>
+        <h1 id="booking-title">{movie.title}</h1>
+        <p>{theatre.name}</p>
+      </section>
       <div className="booking-layout">
         <SeatGrid selectedSeats={selectedSeats} onSelectSeats={setSelectedSeats} />
         <aside className="booking-summary" aria-labelledby="summary-heading">
-          <p className="eyebrow">ORDER SUMMARY</p><h2 id="summary-heading">Your booking</h2>
-          <dl><div><dt>Seats</dt><dd>{selectedSeats.length ? selectedSeats.join(', ') : 'Not selected'}</dd></div><div><dt>Price</dt><dd>Rs. {total}</dd></div></dl>
-          <p className="summary-total"><span>Total</span><strong>Rs. {total}</strong></p>
+          <p className="eyebrow">ORDER SUMMARY</p>
+          <h2 id="summary-heading">Your booking</h2>
+          <dl>
+            <div>
+              <dt>Seats</dt>
+              <dd>{selectedSeats.length ? selectedSeats.join(', ') : 'Not selected'}</dd>
+            </div>
+            <div>
+              <dt>Price</dt>
+              <dd>Rs. {total}</dd>
+            </div>
+          </dl>
+          <p className="summary-total">
+            <span>Total</span>
+            <strong>Rs. {total}</strong>
+          </p>
         </aside>
-        <div>{bookingError && <p className="form-error booking-error" role="alert">{bookingError} Select your payment method and try again.</p>}<PaymentForm canPay={selectedSeats.length > 0} onPay={handlePay} /></div>
+        <div>
+          {bookingError && (
+            <p className="form-error booking-error" role="alert">
+              {bookingError} Select your payment method and try again.
+            </p>
+          )}
+          <PaymentForm canPay={selectedSeats.length > 0} onPay={handlePay} />
+        </div>
       </div>
     </main>
   );

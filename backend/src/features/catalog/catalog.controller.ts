@@ -7,8 +7,18 @@ const theatreQuerySchema = z.object({
   movieId: z.string().regex(/^[1-9]\d*$/, 'movieId must be a positive integer').transform(Number)
 });
 
+interface CatalogTestOptions {
+  delayMs: number;
+  emptyTheatresMovieId?: number;
+}
+
 /** Create Express handlers for the protected catalogue endpoints. */
-export function createCatalogController(catalogService: CatalogService) {
+export function createCatalogController(catalogService: CatalogService, testOptions: CatalogTestOptions) {
+  const delayResponse = async (): Promise<void> => {
+    if (testOptions.delayMs > 0) {
+      await new Promise<void>((resolve) => setTimeout(resolve, testOptions.delayMs));
+    }
+  };
   /** Return the full seeded movie catalogue. */
   const listMovies = async (_req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
@@ -25,7 +35,11 @@ export function createCatalogController(catalogService: CatalogService) {
       if (!catalogService.movieExists(movieId)) {
         throw new HttpError(404, 'Movie not found');
       }
-      res.status(200).json({ theatres: catalogService.listTheatresForMovie(movieId) });
+      await delayResponse();
+      const theatres = movieId === testOptions.emptyTheatresMovieId
+        ? []
+        : catalogService.listTheatresForMovie(movieId);
+      res.status(200).json({ theatres });
     } catch (error: unknown) {
       next(error);
     }

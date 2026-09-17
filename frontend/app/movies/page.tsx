@@ -110,7 +110,14 @@ export default function MoviesPage() {
             <p className="eyebrow">YOUR VENUE</p>
             <h2 id="theatre-heading">Where would you like to watch {selectedMovie.title}?</h2>
             {isLoadingTheatres ? <p className="catalog-status" role="status">Loading theatres…</p> : (
-              <TheatreList theatres={theatres} selectedTheatreId={selectedTheatreId} onSelect={handleTheatreSelect} />
+              <>
+                <TheatreList theatres={theatres} selectedTheatreId={selectedTheatreId} onSelect={handleTheatreSelect} />
+                {selectedTheatreId && (
+                  <button className="primary-button" type="button" onClick={() => router.push('/booking')}>
+                    Continue to seat selection
+                  </button>
+                )}
+              </>
             )}
           </section>
         )}

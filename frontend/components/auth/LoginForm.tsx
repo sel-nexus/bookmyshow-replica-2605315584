@@ -37,7 +37,11 @@ export function LoginForm() {
         router.push('/movies');
       }
     } catch (caughtError: unknown) {
-      setError(caughtError instanceof ApiError ? caughtError.message : 'Unable to connect. Please try again.');
+      setError(
+        caughtError instanceof ApiError
+          ? caughtError.message
+          : 'Unable to connect. Please try again.',
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -46,27 +50,80 @@ export function LoginForm() {
   return (
     <form className="login-form" onSubmit={handleSubmit} noValidate>
       <div className="form-copy">
-        <p className="eyebrow">{step === 'mobile' ? 'WELCOME BACK' : 'ALMOST THERE'}</p>
+        <p className="eyebrow">
+          {step === 'mobile' ? 'WELCOME BACK' : 'ALMOST THERE'}
+        </p>
         <h1>{step === 'mobile' ? 'Sign in to the show.' : 'Check your messages.'}</h1>
-        <p>{step === 'mobile' ? 'Enter your mobile number to receive a one-time password.' : `We sent a 4-digit code to ${mobileNumber}.`}</p>
+        <p>
+          {step === 'mobile'
+            ? 'Enter your mobile number to receive a one-time password.'
+            : `We sent a 4-digit code to ${mobileNumber}.`}
+        </p>
       </div>
 
       {step === 'mobile' ? (
         <div className="field-group">
           <label htmlFor="mobileNumber">Mobile number</label>
-          <div className="mobile-input"><span aria-hidden="true">+91</span><input id="mobileNumber" name="mobileNumber" inputMode="numeric" autoComplete="tel" value={mobileNumber} onChange={(event) => setMobileNumber(event.target.value.replace(/\D/g, '').slice(0, 10))} aria-required="true" aria-invalid={Boolean(error)} aria-describedby={error ? 'login-error' : undefined} /></div>
+          <div className="mobile-input">
+            <span aria-hidden="true">+91</span>
+            <input
+              id="mobileNumber"
+              name="mobileNumber"
+              inputMode="numeric"
+              autoComplete="tel"
+              value={mobileNumber}
+              onChange={(event) =>
+                setMobileNumber(event.target.value.replace(/\D/g, '').slice(0, 10))
+              }
+              aria-required="true"
+              aria-invalid={Boolean(error)}
+              aria-describedby={error ? 'login-error' : undefined}
+            />
+          </div>
         </div>
       ) : (
         <div className="field-group">
           <label htmlFor="otp">One-time password</label>
-          <input id="otp" name="otp" inputMode="numeric" autoComplete="one-time-code" value={otp} onChange={(event) => setOtp(event.target.value.replace(/\D/g, '').slice(0, 4))} aria-required="true" aria-invalid={Boolean(error)} aria-describedby={error ? 'login-error' : undefined} />
-          <button className="text-button" type="button" onClick={() => { setStep('mobile'); setOtp(''); setError(''); }}>Change mobile number</button>
+          <input
+            id="otp"
+            name="otp"
+            inputMode="numeric"
+            autoComplete="one-time-code"
+            value={otp}
+            onChange={(event) => setOtp(event.target.value.replace(/\D/g, '').slice(0, 4))}
+            aria-required="true"
+            aria-invalid={Boolean(error)}
+            aria-describedby={error ? 'login-error' : undefined}
+          />
+          <button
+            className="text-button"
+            type="button"
+            onClick={() => {
+              setStep('mobile');
+              setOtp('');
+              setError('');
+            }}
+          >
+            Change mobile number
+          </button>
         </div>
       )}
 
-      <div aria-live="assertive">{error && <p className="form-error" id="login-error" role="alert">{error}</p>}</div>
-      <button className="primary-button" type="submit" disabled={isSubmitting}>{isSubmitting ? 'Please wait…' : step === 'mobile' ? 'Continue' : 'Verify & continue'}</button>
-      {step === 'otp' && <p className="hint">For this preview, use OTP <strong>1234</strong>.</p>}
+      <div aria-live="assertive">
+        {error && (
+          <p className="form-error" id="login-error" role="alert">
+            {error}
+          </p>
+        )}
+      </div>
+      <button className="primary-button" type="submit" disabled={isSubmitting}>
+        {isSubmitting ? 'Please wait…' : step === 'mobile' ? 'Continue' : 'Verify & continue'}
+      </button>
+      {step === 'otp' && (
+        <p className="hint">
+          For this preview, use OTP <strong>1234</strong>.
+        </p>
+      )}
     </form>
   );
 }

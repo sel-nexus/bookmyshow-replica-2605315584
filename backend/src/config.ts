@@ -9,7 +9,9 @@ const environmentSchema = z.object({
   CORS_ORIGIN: z.string().min(1).default('http://localhost:3000'),
   DATABASE_PATH: z.string().min(1).default('./data/bookmyshow.db'),
   TEST_DATABASE_PATH: z.string().min(1).default('./data/bookmyshow.test.db'),
-  JWT_SECRET: z.string().min(16).default('dev-secret-change-in-production')
+  JWT_SECRET: z.string().min(16).default('dev-secret-change-in-production'),
+  TEST_CATALOG_DELAY_MS: z.coerce.number().int().nonnegative().default(0),
+  TEST_EMPTY_THEATRES_MOVIE_ID: z.coerce.number().int().nonnegative().default(0)
 });
 
 /** Expose validated runtime configuration for the API. */
@@ -20,6 +22,8 @@ export const config = (() => {
     corsOrigins: values.CORS_ORIGIN.split(',').map((origin) => origin.trim()).filter(Boolean),
     databasePath: values.DATABASE_PATH,
     testDatabasePath: values.TEST_DATABASE_PATH,
-    jwtSecret: values.JWT_SECRET
+    jwtSecret: values.JWT_SECRET,
+    testCatalogDelayMs: values.TEST_CATALOG_DELAY_MS,
+    testEmptyTheatresMovieId: values.TEST_EMPTY_THEATRES_MOVIE_ID || undefined
   };
 })();

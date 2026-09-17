@@ -7,7 +7,7 @@ import type Database from 'better-sqlite3';
 import { createApp } from '../src/app';
 import { createDatabase } from '../src/db/database';
 
-/** Exercise durable booking creation against an isolated file-backed SQLite database. */
+/** Exercise durable booking creation and database constraints using isolated SQLite files. */
 describe('bookings API', () => {
   const jwtSecret = 'test-secret-that-is-long-enough';
   let database: Database.Database;
@@ -29,13 +29,12 @@ describe('bookings API', () => {
     fs.rmSync(`${databasePath}-shm`, { force: true });
   });
 
-  /** Reject booking creation without a verified bearer token. */
   it('returns 401 when authentication is absent', async () => {
     const response = await request(createApp(database, jwtSecret, ['http://localhost:3000'])).post('/api/v1/bookings').send({});
     expect(response.status).toBe(401);
+    expect(response.body).toEqual({ error: 'Authentication required' });
   });
 
-  /** Persists a valid mapped booking and returns joined catalogue confirmation details. */
   it('creates a booking and persists the re-queryable SQLite record', async () => {
     const response = await request(createApp(database, jwtSecret, ['http://localhost:3000']))
       .post('/api/v1/bookings').set('Authorization', `Bearer ${token}`)
@@ -47,32 +46,52 @@ describe('bookings API', () => {
     expect(record).toEqual({ user_id: 1, movie_id: 1, theatre_id: 1, seats: '["A1","A2","A3"]', payment_method: 'card', total_price: 450 });
   });
 
-  /** Reject totals that cannot be derived from the chosen seats. */
   it('returns 400 when totalPrice does not equal the seat count price', async () => {
     const response = await request(createApp(database, jwtSecret, ['http://localhost:3000']))
       .post('/api/v1/bookings').set('Authorization', `Bearer ${token}`)
       .send({ movieId: 1, theatreId: 1, seats: ['A1'], paymentMethod: 'upi', totalPrice: 450 });
     expect(response.status).toBe(400);
-    expect(response.body.error).toContain('totalPrice');
+    expect(response.body).toEqual({ error: 'totalPrice must equal 150 multiplied by the number of seats' });
   });
 
-  /** Reject unmapped theatres and distinguish absent catalogue resources. */
   it('returns 400 for an unmapped theatre and 404 for unknown IDs', async () => {
     const app = createApp(database, jwtSecret, ['http://localhost:3000']);
     const unmapped = await request(app).post('/api/v1/bookings').set('Authorization', `Bearer ${token}`).send({ movieId: 1, theatreId: 3, seats: ['A1'], paymentMethod: 'card', totalPrice: 150 });
     const unknownMovie = await request(app).post('/api/v1/bookings').set('Authorization', `Bearer ${token}`).send({ movieId: 99, theatreId: 1, seats: ['A1'], paymentMethod: 'card', totalPrice: 150 });
     const unknownTheatre = await request(app).post('/api/v1/bookings').set('Authorization', `Bearer ${token}`).send({ movieId: 1, theatreId: 99, seats: ['A1'], paymentMethod: 'card', totalPrice: 150 });
     expect(unmapped.status).toBe(400);
+    expect(unmapped.body).toEqual({ error: 'Theatre is not available for this movie' });
     expect(unknownMovie.status).toBe(404);
+    expect(unknownMovie.body).toEqual({ error: 'Movie not found' });
     expect(unknownTheatre.status).toBe(404);
+    expect(unknownTheatre.body).toEqual({ error: 'Theatre not found' });
   });
 
-  /** Reject duplicate or malformed seat identifiers at the validation boundary. */
-  it('returns 400 for duplicate or invalid seat strings', async () => {
-    const app = createApp(database, jwtSecret, ['http://localhost:3000']);
-    const duplicate = await request(app).post('/api/v1/bookings').set('Authorization', `Bearer ${token}`).send({ movieId: 1, theatreId: 1, seats: ['A1', 'A1'], paymentMethod: 'card', totalPrice: 300 });
-    const malformed = await request(app).post('/api/v1/bookings').set('Authorization', `Bearer ${token}`).send({ movieId: 1, theatreId: 1, seats: ['Z9'], paymentMethod: 'card', totalPrice: 150 });
-    expect(duplicate.status).toBe(400);
-    expect(malformed.status).toBe(400);
+  it.each([
+    [{ theatreId: 1, seats: ['A1'], paymentMethod: 'card', totalPrice: 150 }, 'missing movieId'],
+    [{ movieId: '1', theatreId: 1, seats: ['A1'], paymentMethod: 'card', totalPrice: 150 }, 'string movieId'],
+    [{ movieId: 1, theatreId: 1, seats: ['A1'], paymentMethod: '', totalPrice: 150 }, 'empty payment method'],
+    [{ movieId: 1, theatreId: 1, seats: ["A1'); DROP TABLE bookings; --"], paymentMethod: 'card', totalPrice: 150 }, 'hostile seat string'],
+    [{ movieId: 1, theatreId: 1, seats: [], paymentMethod: 'card', totalPrice: 0 }, 'empty seats']
+  ])('rejects invalid booking schema (%s) without mutating bookings', async (body) => {
+    const response = await request(createApp(database, jwtSecret, ['http://localhost:3000']))
+      .post('/api/v1/bookings').set('Authorization', `Bearer ${token}`).send(body);
+
+    expect(response.status).toBe(400);
+    expect(response.body.error).toBe('Invalid request');
+    expect(response.body.details).toEqual(expect.any(Object));
+    expect(database.prepare('SELECT COUNT(*) AS count FROM bookings').get()).toEqual({ count: 0 });
+  });
+
+  it('enforces unique values, foreign keys, mapping keys, and booking CHECK constraints directly in SQLite', () => {
+    database.prepare('INSERT INTO users (mobile_number) VALUES (?)').run('9999999999');
+    expect(() => database.prepare('INSERT INTO users (mobile_number) VALUES (?)').run('9999999999')).toThrow(/UNIQUE constraint failed/);
+    expect(() => database.prepare('INSERT INTO movies (title) VALUES (?)').run('Paradise')).toThrow(/UNIQUE constraint failed/);
+    expect(() => database.prepare('INSERT INTO theatres (name) VALUES (?)').run('Sandhya 70mm')).toThrow(/UNIQUE constraint failed/);
+    expect(() => database.prepare('INSERT INTO movie_theatres (movie_id, theatre_id) VALUES (?, ?)').run(999, 1)).toThrow(/FOREIGN KEY constraint failed/);
+    expect(() => database.prepare('INSERT INTO movie_theatres (movie_id, theatre_id) VALUES (?, ?)').run(1, 1)).toThrow(/UNIQUE constraint failed/);
+    expect(() => database.prepare("INSERT INTO bookings (user_id, movie_id, theatre_id, seats, payment_method, total_price) VALUES (999, 1, 1, '[]', 'card', 150)").run()).toThrow(/FOREIGN KEY constraint failed/);
+    expect(() => database.prepare("INSERT INTO bookings (user_id, movie_id, theatre_id, seats, payment_method, total_price) VALUES (1, 1, 1, '[]', 'cash', 150)").run()).toThrow(/CHECK constraint failed/);
+    expect(() => database.prepare("INSERT INTO bookings (user_id, movie_id, theatre_id, seats, payment_method, total_price) VALUES (1, 1, 1, '[]', 'card', 0)").run()).toThrow(/CHECK constraint failed/);
   });
 });

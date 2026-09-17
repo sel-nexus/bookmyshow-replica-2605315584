@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { render, screen, act, fireEvent } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 import { PaymentForm } from '../components/booking/PaymentForm';
@@ -14,7 +14,19 @@ function CheckoutHarness({ onComplete = vi.fn() }: { onComplete?: () => void }) 
   const handlePay = useCallback((_payment: PaymentDetails): void => setProcessing(true), []);
   const handleComplete = useCallback((): void => onComplete(), [onComplete]);
 
-  return <>{processing ? <ProcessingPayment onComplete={handleComplete} /> : <><SeatGrid selectedSeats={seats} onSelectSeats={setSeats} /><p>Total: Rs. {seats.length * 150}</p><PaymentForm onPay={handlePay} /></>}</>;
+  return (
+    <>
+      {processing ? (
+        <ProcessingPayment onComplete={handleComplete} />
+      ) : (
+        <>
+          <SeatGrid selectedSeats={seats} onSelectSeats={setSeats} />
+          <p>Total: Rs. {seats.length * 150}</p>
+          <PaymentForm onPay={handlePay} />
+        </>
+      )}
+    </>
+  );
 }
 
 /** Test the deterministic checkout UI and its method-specific validation states. */
@@ -40,8 +52,20 @@ describe('PaymentForm booking flow', () => {
     expect(screen.getByLabelText('CVV')).toBeInTheDocument();
     expect(screen.queryByLabelText('UPI ID')).not.toBeInTheDocument();
     await user.click(screen.getByRole('radio', { name: 'UPI' }));
+    expect(screen.getByRole('radio', { name: 'UPI' })).toBeChecked();
     expect(screen.getByLabelText('UPI ID')).toBeInTheDocument();
     expect(screen.queryByLabelText('Card Number')).not.toBeInTheDocument();
+  });
+
+  it('disables payment method controls and submission when payment is unavailable', () => {
+    render(<PaymentForm disabled onPay={vi.fn()} />);
+
+    expect(screen.getByRole('radio', { name: 'Card' })).toBeDisabled();
+    expect(screen.getByRole('radio', { name: 'UPI' })).toBeDisabled();
+    expect(screen.getByLabelText('Card Number')).toBeDisabled();
+    expect(screen.getByLabelText('Expiry Date')).toBeDisabled();
+    expect(screen.getByLabelText('CVV')).toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Pay Rs. 450' })).toBeDisabled();
   });
 
   it('keeps processing visible through 1999ms and completes only after 2000ms', async () => {
@@ -49,15 +73,23 @@ describe('PaymentForm booking flow', () => {
     const onComplete = vi.fn();
     render(<CheckoutHarness onComplete={onComplete} />);
 
-    fireEvent.change(screen.getByLabelText('Card Number'), { target: { value: '4242424242424242' } });
+    fireEvent.change(screen.getByLabelText('Card Number'), {
+      target: { value: '4242424242424242' },
+    });
     fireEvent.change(screen.getByLabelText('Expiry Date'), { target: { value: '12/30' } });
     fireEvent.change(screen.getByLabelText('CVV'), { target: { value: '123' } });
     fireEvent.click(screen.getByRole('button', { name: 'Pay Rs. 450' }));
-    expect(screen.getByRole('status', { name: 'Payment processing' })).toHaveTextContent('Processing Payment...');
-    await act(async () => { vi.advanceTimersByTime(1999); });
+    expect(screen.getByRole('status', { name: 'Payment processing' })).toHaveTextContent(
+      'Processing Payment...',
+    );
+    await act(async () => {
+      vi.advanceTimersByTime(1999);
+    });
     expect(onComplete).not.toHaveBeenCalled();
     expect(screen.getByRole('status', { name: 'Payment processing' })).toBeInTheDocument();
-    await act(async () => { vi.advanceTimersByTime(1); });
+    await act(async () => {
+      vi.advanceTimersByTime(1);
+    });
     expect(onComplete).toHaveBeenCalledTimes(1);
     vi.useRealTimers();
   });

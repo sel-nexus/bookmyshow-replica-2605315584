@@ -30,7 +30,6 @@ describe('catalog API', () => {
     fs.rmSync(`${databasePath}-shm`, { force: true });
   });
 
-  /** Reject movie access when bearer credentials are absent. */
   it('rejects unauthenticated movie requests', async () => {
     const app = createApp(database, jwtSecret, ['http://localhost:3000']);
     const response = await request(app).get('/api/v1/movies');
@@ -39,10 +38,24 @@ describe('catalog API', () => {
     expect(response.body).toEqual({ error: 'Authentication required' });
   });
 
-  /** Return exactly the seeded movies from SQLite. */
+  it.each([
+    [undefined, { error: 'Authentication required' }],
+    ['Token not-a-bearer-token', { error: 'Authentication required' }],
+    ['Bearer definitely-not-a-jwt', { error: 'Invalid authentication token' }]
+  ])('returns 401 with an explicit body when theatre bearer credentials are invalid: %s', async (authorization, expectedBody) => {
+    const requestBuilder = request(createApp(database, jwtSecret, ['http://localhost:3000'])).get('/api/v1/theatres?movieId=1');
+    if (authorization) {
+      requestBuilder.set('Authorization', authorization);
+    }
+    const response = await requestBuilder;
+
+    expect(response.status).toBe(401);
+    expect(response.body).toEqual(expectedBody);
+  });
+
   it('returns the three seeded movies for an authenticated user', async () => {
-    const app = createApp(database, jwtSecret, ['http://localhost:3000']);
-    const response = await request(app).get('/api/v1/movies').set('Authorization', `Bearer ${token}`);
+    const response = await request(createApp(database, jwtSecret, ['http://localhost:3000']))
+      .get('/api/v1/movies').set('Authorization', `Bearer ${token}`);
 
     expect(response.status).toBe(200);
     expect(response.body.movies).toEqual([
@@ -52,20 +65,20 @@ describe('catalog API', () => {
     ]);
   });
 
-  /** Return only theatres mapped to the requested movie. */
   it('returns mapped theatres for a movie', async () => {
-    const app = createApp(database, jwtSecret, ['http://localhost:3000']);
-    const response = await request(app).get('/api/v1/theatres?movieId=1').set('Authorization', `Bearer ${token}`);
+    const response = await request(createApp(database, jwtSecret, ['http://localhost:3000']))
+      .get('/api/v1/theatres?movieId=1').set('Authorization', `Bearer ${token}`);
 
     expect(response.status).toBe(200);
-    expect(response.body.theatres).toEqual([
-      { id: 1, name: 'Sandhya 70mm' },
-      { id: 2, name: 'Sudharsham 70mm' }
-    ]);
+    expect(response.body).toEqual({
+      theatres: [
+        { id: 1, name: 'Sandhya 70mm' },
+        { id: 2, name: 'Sudharsham 70mm' }
+      ]
+    });
   });
 
-  /** Reject missing and non-positive movie query values. */
-  it('rejects missing and invalid movie queries', async () => {
+  it('rejects missing and non-positive movie queries', async () => {
     const app = createApp(database, jwtSecret, ['http://localhost:3000']);
     const missing = await request(app).get('/api/v1/theatres').set('Authorization', `Bearer ${token}`);
     const invalid = await request(app).get('/api/v1/theatres?movieId=0').set('Authorization', `Bearer ${token}`);
@@ -76,10 +89,9 @@ describe('catalog API', () => {
     expect(invalid.body.error).toBe('Invalid request');
   });
 
-  /** Return not found for a syntactically valid but absent movie. */
   it('returns 404 when the requested movie does not exist', async () => {
-    const app = createApp(database, jwtSecret, ['http://localhost:3000']);
-    const response = await request(app).get('/api/v1/theatres?movieId=999').set('Authorization', `Bearer ${token}`);
+    const response = await request(createApp(database, jwtSecret, ['http://localhost:3000']))
+      .get('/api/v1/theatres?movieId=999').set('Authorization', `Bearer ${token}`);
 
     expect(response.status).toBe(404);
     expect(response.body).toEqual({ error: 'Movie not found' });
