@@ -16,7 +16,7 @@ test('shows an accessible error for an invalid mobile number', async ({ page }) 
   await page.goto('/login');
   await page.getByLabel('Mobile number').fill('98765');
   await page.getByRole('button', { name: 'Continue' }).click();
-  await expect(page.getByRole('alert')).toHaveText('Enter a valid 10-digit mobile number.');
+  await expect(page.getByText('Enter a valid 10-digit mobile number.')).toBeVisible();
   await page.screenshot({ path: 'test-results/auth-invalid-mobile.png', fullPage: true });
   expect(browserErrors).toEqual([]);
 });

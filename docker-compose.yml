@@ -1,0 +1,36 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    environment:
+      PORT: 4000
+      CORS_ORIGIN: http://localhost:3000
+      DATABASE_PATH: /app/data/bookmyshow.db
+      JWT_SECRET: dev-secret-change-in-production
+      TEST_CATALOG_DELAY_MS: 0
+      TEST_EMPTY_THEATRES_MOVIE_ID: 0
+    ports:
+      - "4000:4000"
+    volumes:
+      - booking-data:/app/data
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:4000/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        API_SERVER_URL: http://backend:4000
+    environment:
+      API_SERVER_URL: http://backend:4000
+    ports:
+      - "3000:3000"
+    depends_on:
+      backend:
+        condition: service_healthy
+
+volumes:
+  booking-data:

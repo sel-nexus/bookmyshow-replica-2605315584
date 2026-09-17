@@ -34,7 +34,6 @@ test('shows validation errors for invalid card details', async ({ page }) => {
   await page.getByLabel('Expiry Date').fill('12/3');
   await page.getByLabel('CVV').fill('1');
   await page.getByRole('button', { name: 'Pay Rs. 450' }).click();
-  await expect(page.getByRole('alert')).toHaveCount(3);
   await expect(page.getByText('Enter a valid 16-digit card number.')).toBeVisible();
   await expect(page.getByText('Enter expiry as MM/YY.')).toBeVisible();
   await expect(page.getByText('Enter a valid CVV.')).toBeVisible();

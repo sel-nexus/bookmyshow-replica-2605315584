@@ -57,7 +57,7 @@ test('shows loading then no theatres when the live test backend returns an empty
 
   await page.getByRole('button', { name: 'Choose Bloody Romeo' }).click();
   await expect(page.getByText('Loading theatres…')).toBeVisible();
-  await expect(page.getByText(/no theatres available/i)).toBeVisible();
+  await expect(page.getByText('No theatres are available for this movie.')).toBeVisible();
   await expect(page.getByRole('button', { name: 'Sandhya 70mm' })).not.toBeVisible();
   expect(browserErrors).toEqual([]);
 });
