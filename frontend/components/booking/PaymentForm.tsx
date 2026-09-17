@@ -35,9 +35,7 @@ export function PaymentForm({ disabled = false, canPay = true, onPay }: PaymentF
       return;
     }
 
-    onPay(method === 'card'
-      ? { method, cardLastFour: cardNumber.replace(/\s/g, '').slice(-4) }
-      : { method, upiId: upiId.trim() });
+    onPay({ method });
   };
 
   return (

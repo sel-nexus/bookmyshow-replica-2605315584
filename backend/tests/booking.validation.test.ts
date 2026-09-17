@@ -1,37 +1,35 @@
 import { describe, expect, it } from 'vitest';
-import { z } from 'zod';
+import { createBookingSchema } from '../src/features/bookings/booking.types';
 
-/** Define the booking request contract that the next booking endpoint will reuse. */
-export const bookingPayloadSchema = z.object({
-  movieId: z.number().int().positive(),
-  theatreId: z.number().int().positive(),
-  seats: z.array(z.string().regex(/^[A-E][1-6]$/)).min(1),
-  total: z.number().positive(),
-  payment: z.discriminatedUnion('method', [
-    z.object({ method: z.literal('card'), cardLastFour: z.string().regex(/^\d{4}$/) }),
-    z.object({ method: z.literal('upi'), upiId: z.string().min(3).regex(/^\S+@\S+$/) })
-  ])
-});
-
-/** Validate the future booking request payload contract without exposing an endpoint yet. */
+/** Verify the booking endpoint accepts only its secure, non-sensitive command shape. */
 describe('booking payload validation contract', () => {
-  it('accepts selected seats and masked card payment data', () => {
-    expect(bookingPayloadSchema.safeParse({
+  /** Accept mapped-resource identifiers, valid unique seats, payment method, and derived total. */
+  it('accepts a non-sensitive booking command', () => {
+    expect(createBookingSchema.safeParse({
       movieId: 1,
       theatreId: 2,
       seats: ['A1', 'A2', 'A3'],
-      total: 450,
-      payment: { method: 'card', cardLastFour: '4242' }
+      paymentMethod: 'card',
+      totalPrice: 450
     }).success).toBe(true);
   });
 
-  it('rejects invalid seats and incomplete payment details', () => {
-    expect(bookingPayloadSchema.safeParse({
+  /** Reject malformed or duplicate seats and reject card data outside the endpoint contract. */
+  it('rejects invalid seats, duplicates, and sensitive payment fields', () => {
+    expect(createBookingSchema.safeParse({
       movieId: 1,
       theatreId: 2,
-      seats: ['Z9'],
-      total: 450,
-      payment: { method: 'upi', upiId: 'not-a-upi-id' }
+      seats: ['A1', 'A1'],
+      paymentMethod: 'upi',
+      totalPrice: 300
+    }).success).toBe(false);
+    expect(createBookingSchema.safeParse({
+      movieId: 1,
+      theatreId: 2,
+      seats: ['A1'],
+      paymentMethod: 'card',
+      totalPrice: 150,
+      cardNumber: '4242424242424242'
     }).success).toBe(false);
   });
 });
